@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Mountain Icon -->
+  <path d="M10 35L20 20L30 28L40 15" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="15" cy="17" r="2" fill="#667eea"/>
+</svg>

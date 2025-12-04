@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Product Icon -->
+  <path d="M5 7H19L18 18C18 19.105 17.105 20 16 20H8C6.895 20 6 19.105 6 18L5 7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M10 3V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M14 3V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <line x1="8" y1="7" x2="16" y2="7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg>
