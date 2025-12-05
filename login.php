@@ -279,14 +279,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             ?>
 
-            <!-- Informasi Demo -->
-            <div class="demo-info">
-                <strong>Akun Demo untuk Testing:</strong>
-                <p><strong>Admin:</strong> admin / admin123</p>
-                <p><strong>Kasir:</strong> kasir / kasir123</p>
-                <p><strong>Owner:</strong> owner / owner123</p>
-            </div>
-
             <!-- Form Login -->
             <form method="POST" action="">
                 <div class="form-group">
@@ -298,7 +290,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="password">Password</label>
                     <div class="input-group">
                         <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password" required autocomplete="current-password">
-                        <span class="password-toggle" onclick="togglePassword()">👁️</span>
+                        <span class="password-toggle" onclick="togglePassword()"></span>
                     </div>
                 </div>
 

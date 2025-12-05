@@ -82,6 +82,12 @@ $filter_revenue = $filter_revenue['total'] ?? 0;
 function formatCurrency($value) {
     return 'Rp ' . number_format($value, 0, ',', '.');
 }
+
+// Helper function untuk format date
+function formatDate($date) {
+    $dateTime = new DateTime($date);
+    return $dateTime->format('d/m/Y H:i');
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -214,10 +220,6 @@ function formatCurrency($value) {
                 <!-- INFORMASI GENERAL -->
                 <div class="card mb-3">
                     <div class="card-header">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
-                            <path d="M12 2L2 8V16C2 21.5 12 23 12 23S22 21.5 22 16V8L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            <path d="M12 11V15M12 19H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
                         Ringkasan Keseluruhan
                     </div>
                     <div class="card-body">
@@ -241,9 +243,6 @@ function formatCurrency($value) {
                 <!-- PRODUK TERLARIS -->
                 <div class="card mb-3">
                     <div class="card-header">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
-                            <path d="M12 2L15.09 10.26H24L17.55 15.74L20.64 24L12 18.52L3.36 24L6.45 15.74L0 10.26H8.91L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        </svg>
                         10 Produk Terlaris
                     </div>
                     <div class="card-body">
@@ -252,11 +251,11 @@ function formatCurrency($value) {
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Nama Produk</th>
-                                            <th>Kategori</th>
-                                            <th style="text-align: right;">Terjual</th>
-                                            <th style="text-align: right;">Penjualan</th>
+                                            <th>No</th>
+                                            <th><strong>Nama Produk</strong></th>
+                                            <th><strong>Kategori</strong></th>
+                                            <th style="text-align: right;"><strong>Terjual</strong></th>
+                                            <th style="text-align: right; white-space: nowrap; padding-right: 20px;"><strong>Penjualan</strong></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -265,8 +264,8 @@ function formatCurrency($value) {
                                                 <td><?php echo $index + 1; ?></td>
                                                 <td><strong><?php echo htmlspecialchars($item['nama_produk']); ?></strong></td>
                                                 <td><?php echo htmlspecialchars($item['kategori']); ?></td>
-                                                <td style="text-align: right;"><?php echo $item['total_terjual']; ?> pcs</td>
-                                                <td style="text-align: right;"><strong><?php echo formatCurrency($item['total_penjualan']); ?></strong></td>
+                                                <td style="text-align: right; white-space: nowrap;"><?php echo $item['total_terjual']; ?> pcs</td>
+                                                <td style="text-align: right; white-space: nowrap; padding-right: 20px;"><strong><?php echo formatCurrency($item['total_penjualan']); ?></strong></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -284,24 +283,24 @@ function formatCurrency($value) {
                     <div class="card-body">
                         <?php if (count($transaksi_terakhir) > 0): ?>
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table table-modern">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Tanggal</th>
-                                            <th>Kasir</th>
-                                            <th style="text-align: right;">Total</th>
-                                            <th>Metode</th>
+                                            <th width="5%" class="text-center"><strong>No</strong></th>
+                                            <th width="20%"><strong>Tanggal</strong></th>
+                                            <th width="25%"><strong>Kasir</strong></th>
+                                            <th width="25%"><strong>Total</strong></th>
+                                            <th width="25%"><strong>Metode Pembayaran</strong></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($transaksi_terakhir as $index => $item): ?>
                                             <tr>
-                                                <td><?php echo $index + 1; ?></td>
-                                                <td><?php echo formatDate($item['tanggal_transaksi']); ?></td>
-                                                <td><?php echo htmlspecialchars($item['nama_lengkap']); ?></td>
-                                                <td style="text-align: right;"><strong><?php echo formatCurrency($item['total_harga']); ?></strong></td>
-                                                <td><?php echo ucfirst(str_replace('_', ' ', $item['metode_pembayaran'])); ?></td>
+                                                <td class="text-center"><?php echo $index + 1; ?></td>
+                                                <td class="align-middle"><?php echo formatDate($item['tanggal_transaksi']); ?></td>
+                                                <td class="align-middle"><?php echo htmlspecialchars($item['nama_lengkap']); ?></td>
+                                                <td class="align-middle"><strong><?php echo formatCurrency($item['total_harga']); ?></strong></td>
+                                                <td class="align-middle"><?php echo ucfirst(str_replace('_', ' ', $item['metode_pembayaran'])); ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

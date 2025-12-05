@@ -192,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                                 <table class="table" id="produkTable">
                                     <thead>
                                         <tr>
-                                            <th style="cursor: pointer;" onclick="sortTable('produkTable', 0)">#</th>
+                                            <th style="cursor: pointer;" onclick="sortTable('produkTable', 0)">No</th>
                                             <th style="cursor: pointer;" onclick="sortTable('produkTable', 1)">Nama Produk</th>
                                             <th>Kategori</th>
                                             <th style="cursor: pointer;" onclick="sortTable('produkTable', 3)">Harga</th>
@@ -212,16 +212,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                                                 <td><?php echo formatCurrency($item['harga']); ?></td>
                                                 <td>
                                                     <strong><?php echo $item['stok']; ?></strong>
-                                                    <?php if ($item['stok'] == 0): ?>
-                                                        <span class="badge badge-danger">Habis</span>
-                                                    elseif ($item['stok'] < 10): ?>
-                                                        <span class="badge badge-warning">Sedikit</span>
-                                                    <?php endif; ?>
                                                 </td>
                                                 <td>
-                                                    <span class="badge <?php echo getStatusBadge($item['status']); ?>">
-                                                        <?php echo ucfirst(str_replace('_', ' ', $item['status'])); ?>
-                                                    </span>
+                                                    <?php if ($item['stok'] == 0): ?>
+                                                        <span class="badge badge-danger">Habis</span>
+                                                    <?php elseif ($item['stok'] < 10): ?>
+                                                        <span class="badge badge-warning">Sedikit</span>
+                                                    <?php else: ?>
+                                                        <span class="badge badge-success">Tersedia</span>
+                                                    <?php endif; ?>
                                                 </td>
                                                 <?php if ($is_admin): ?>
                                                     <td>

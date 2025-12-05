@@ -227,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                                 <table class="table" id="userTable">
                                     <thead>
                                         <tr>
-                                            <th style="cursor: pointer;" onclick="sortTable('userTable', 0)">#</th>
+                                            <th style="cursor: pointer;" onclick="sortTable('userTable', 0)">No</th>
                                             <th style="cursor: pointer;" onclick="sortTable('userTable', 1)">Username</th>
                                             <th>Nama Lengkap</th>
                                             <th>Email</th>

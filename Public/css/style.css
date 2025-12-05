@@ -305,6 +305,48 @@ main {
   border-bottom: none;
 }
 
+/* Modern Table Styling */
+.table-modern {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.table-modern thead th {
+  padding: 16px 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.table-modern tbody td {
+  padding: 14px 20px;
+  vertical-align: middle;
+  line-height: 1.5;
+}
+
+.table-modern .text-right {
+  text-align: right !important;
+  padding-right: 20px !important;
+}
+
+.table-modern .text-center {
+  text-align: center !important;
+}
+
+.table-modern .align-middle {
+  vertical-align: middle !important;
+}
+
+.table-modern tbody tr {
+  transition: all 0.2s ease;
+}
+
+.table-modern tbody tr:hover {
+  background-color: #f8f9ff;
+  transform: scale(1.001);
+}
+
 /* ===========================
    BUTTONS
    =========================== */
@@ -611,10 +653,12 @@ select.form-control {
 
 .badge {
   display: inline-block;
-  padding: 5px 12px;
+  padding: 6px 14px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
+  min-width: 85px;
+  text-align: center;
 }
 
 .badge-success {

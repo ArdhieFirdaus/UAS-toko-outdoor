@@ -1,4 +1,10 @@
 <?php
+// Enable error reporting untuk debugging (nonaktifkan di production)
+error_reporting(E_ALL);
+ini_set('display_errors', 0); // Jangan tampilkan error di output
+ini_set('log_errors', 1); // Log error ke file
+
+ob_start(); // Start output buffering to prevent any accidental output
 session_start();
 
 // Pengecekan jika belum login
@@ -23,7 +29,10 @@ $is_kasir = ($role === 'kasir');
 
 // Handle AJAX Request
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    ob_clean(); // Clear any output buffer before sending JSON
     header('Content-Type: application/json');
+    
+    try {
         $action = $_POST['action'];
 
         if ($action === 'add' && $is_kasir) {
@@ -39,6 +48,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 exit();
             }
 
+            // Decode products JSON
+            $products_json = $_POST['products'] ?? '[]';
+            $products = json_decode($products_json, true);
+            
+            if (!is_array($products) || empty($products)) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Data produk tidak valid!'
+                ]);
+                exit();
+            }
+
             // Insert transaksi
             $query = "INSERT INTO transaksi (id_user, total_harga, metode_pembayaran, keterangan, status) 
                      VALUES ('$id_user', '$total_harga', '$metode_pembayaran', '$keterangan', 'selesai')";
@@ -48,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $id_transaksi = $result['insert_id'];
 
                 // Insert detail transaksi dari POST
-                $products = $_POST['products'] ?? [];
                 foreach ($products as $product) {
                     $id_produk = intval($product['id_produk']);
                     $jumlah = intval($product['jumlah']);
@@ -73,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             } else {
                 echo json_encode([
                     'success' => false,
-                    'message' => 'Gagal menyimpan transaksi'
+                    'message' => 'Gagal menyimpan transaksi: ' . $result['message']
                 ]);
             }
         } else if ($action === 'cancel' && $is_kasir) {
@@ -116,8 +136,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 'message' => 'Action tidak valid atau Anda tidak memiliki akses'
             ]);
         }
-        exit();
+    } catch (Exception $e) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error: ' . $e->getMessage()
+        ]);
     }
+    exit();
+}
 
     // Ambil data transaksi dengan info kasir
     if ($is_kasir) {
@@ -242,7 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                                 <table class="table" id="transaksiTable">
                                     <thead>
                                         <tr>
-                                            <th style="cursor: pointer;" onclick="sortTable('transaksiTable', 0)">#</th>
+                                            <th style="cursor: pointer;" onclick="sortTable('transaksiTable', 0)">No</th>
                                             <th style="cursor: pointer;" onclick="sortTable('transaksiTable', 1)">Tanggal</th>
                                             <th>Kasir</th>
                                             <th style="cursor: pointer;" onclick="sortTable('transaksiTable', 3)">Total</th>
@@ -265,7 +291,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-info btn-action" onclick="viewDetail(<?php echo $item['id_transaksi']; ?>)">👁️ Detail</button>
+                                                    <button class="btn btn-info btn-action" onclick="viewDetail(<?php echo $item['id_transaksi']; ?>)">Detail</button>
                                                     <?php if ($is_kasir && $item['status'] === 'selesai'): ?>
                                                         <button class="btn btn-danger btn-action" onclick="cancelTransaksi(<?php echo $item['id_transaksi']; ?>)">Batalkan</button>
                                                     <?php endif; ?>
@@ -525,7 +551,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             const total = cartItems.reduce((sum, item) => sum + item.subtotal, 0);
             document.getElementById('total_harga').value = total;
             document.getElementById('grand_total_display').textContent = formatCurrency(total);
-            document.getElementById('productsData').value = JSON.stringify(cartItems);
+            
+            // Set products data as JSON string
+            const productsInput = document.getElementById('productsData');
+            if (productsInput) {
+                productsInput.value = JSON.stringify(cartItems);
+            }
+            
+            // Also set in form directly untuk backup
+            const form = document.getElementById('transaksiForm');
+            if (form) {
+                let productsField = form.querySelector('input[name="products"]');
+                if (!productsField) {
+                    productsField = document.createElement('input');
+                    productsField.type = 'hidden';
+                    productsField.name = 'products';
+                    form.appendChild(productsField);
+                }
+                productsField.value = JSON.stringify(cartItems);
+            }
         }
 
         function handleTransaksiSubmit(event) {
@@ -536,28 +580,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 return;
             }
 
-            const formData = new FormData(document.getElementById('transaksiForm'));
-            formData.append('products', JSON.stringify(cartItems));
+            // Buat FormData dari form
+            const form = document.getElementById('transaksiForm');
+            const formData = new FormData(form);
+            
+            // Pastikan products di-set dengan benar
+            formData.set('products', JSON.stringify(cartItems));
+            
+            // Debug: Log semua form data
+            console.log('=== Form Data Debug ===');
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ':', value);
+            }
+            console.log('Cart Items:', cartItems);
 
             fetch('transaksi_management.php', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showAlert(data.message, 'success');
-                    closeModal('transaksiModal');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
-                } else {
-                    showAlert(data.message, 'danger');
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                console.log('Response Content-Type:', contentType);
+                console.log('Response Status:', response.status);
+                
+                return response.text();
+            })
+            .then(text => {
+                console.log('=== Raw Response ===');
+                console.log(text);
+                console.log('=== End Raw Response ===');
+                
+                // Cek apakah response kosong
+                if (!text || text.trim() === '') {
+                    showAlert('Response kosong dari server', 'danger');
+                    return;
+                }
+                
+                // Cek apakah ada HTML tag di response (berarti ada error PHP)
+                if (text.trim().startsWith('<')) {
+                    console.error('Response mengandung HTML, bukan JSON!');
+                    showAlert('Server mengembalikan HTML error. Periksa console untuk detail.', 'danger');
+                    return;
+                }
+                
+                try {
+                    const data = JSON.parse(text);
+                    console.log('Parsed JSON:', data);
+                    
+                    if (data.success) {
+                        showAlert(data.message, 'success');
+                        closeModal('transaksiModal');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        showAlert(data.message || 'Terjadi kesalahan', 'danger');
+                    }
+                } catch (e) {
+                    console.error('JSON Parse Error:', e);
+                    console.error('Failed to parse:', text.substring(0, 200));
+                    showAlert('Response bukan JSON valid. Periksa console.', 'danger');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                showAlert('Terjadi kesalahan: ' + error.message, 'danger');
+                console.error('Fetch Error:', error);
+                showAlert('Terjadi kesalahan koneksi: ' + error.message, 'danger');
             });
         }
 

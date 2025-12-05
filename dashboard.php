@@ -187,7 +187,7 @@ require_once 'Config/koneksi.php';
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 8px;">
                                 <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
                                 <text x="12" y="16" font-size="14" font-weight="bold" text-anchor="middle" fill="currentColor">i</text>
-                            </circle>
+                                </circle>
                             </svg>
                             Informasi Penting
                         </div>

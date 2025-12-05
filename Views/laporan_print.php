@@ -116,7 +116,7 @@ $revenue = fetch_one($conn, "
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>No</th>
                     <th>Nama Produk</th>
                     <th>Kategori</th>
                     <th style="text-align: right;">Terjual</th>
@@ -147,7 +147,7 @@ $revenue = fetch_one($conn, "
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>No</th>
                     <th>Tanggal</th>
                     <th>Kasir</th>
                     <th style="text-align: right;">Total</th>
@@ -176,7 +176,7 @@ $revenue = fetch_one($conn, "
         <div class="footer-print">
             <p>&copy; 2025 Toko Outdoor - Sistem Informasi Manajemen</p>
             <p class="no-print">
-                <button onclick="window.print()" class="btn btn-primary">🖨️ Cetak</button>
+                <button onclick="window.print()" class="btn btn-primary">Cetak</button>
                 <button onclick="window.close()" class="btn btn-secondary">Tutup</button>
             </p>
         </div>
