@@ -1,13 +1,19 @@
 <?php
-session_start();
+// Start session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-// Pengecekan jika belum login
-if (!isset($_SESSION['id_user'])) {
-    header('Location: login.php');
+// Pengecekan jika belum login atau session tidak valid
+if (!isset($_SESSION['id_user']) || empty($_SESSION['id_user']) || !isset($_SESSION['login_time'])) {
+    // Clear session jika ada session rusak
+    session_unset();
+    session_destroy();
+    header('Location: login.php', true, 303);
     exit();
 }
 
-require_once 'Config/koneksi.php';
+require_once '../Config/koneksi.php';
 
     // Ambil informasi user
     $id_user = $_SESSION['id_user'];
@@ -20,19 +26,19 @@ require_once 'Config/koneksi.php';
         $menus = array(
             'admin' => array(
                 'dashboard' => array('label' => 'Dashboard', 'url' => 'dashboard.php', 'active' => true),
-                'user' => array('label' => 'Manajemen User', 'url' => 'Views/user_management.php', 'active' => false),
-                'produk' => array('label' => 'Produk', 'url' => 'Views/produk_management.php', 'active' => false),
-                'transaksi' => array('label' => 'Transaksi', 'url' => 'Views/transaksi_management.php', 'active' => false),
-                'laporan' => array('label' => 'Laporan', 'url' => 'Views/laporan.php', 'active' => false),
+                'user' => array('label' => 'Manajemen User', 'url' => 'user_management.php', 'active' => false),
+                'produk' => array('label' => 'Produk', 'url' => 'produk_management.php', 'active' => false),
+                'transaksi' => array('label' => 'Transaksi', 'url' => 'transaksi_management.php', 'active' => false),
+                'laporan' => array('label' => 'Laporan', 'url' => 'laporan.php', 'active' => false),
             ),
             'kasir' => array(
                 'dashboard' => array('label' => 'Dashboard', 'url' => 'dashboard.php', 'active' => true),
-                'produk' => array('label' => 'Produk', 'url' => 'Views/produk_management.php', 'active' => false),
-                'transaksi' => array('label' => 'Transaksi', 'url' => 'Views/transaksi_management.php', 'active' => false),
+                'produk' => array('label' => 'Produk', 'url' => 'produk_management.php', 'active' => false),
+                'transaksi' => array('label' => 'Transaksi', 'url' => 'transaksi_management.php', 'active' => false),
             ),
             'owner' => array(
                 'dashboard' => array('label' => 'Dashboard', 'url' => 'dashboard.php', 'active' => true),
-                'laporan' => array('label' => 'Laporan', 'url' => 'Views/laporan.php', 'active' => false),
+                'laporan' => array('label' => 'Laporan', 'url' => 'laporan.php', 'active' => false),
             )
         );
 
@@ -66,7 +72,7 @@ require_once 'Config/koneksi.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Toko Outdoor</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="Public/css/style.css">
+    <link rel="stylesheet" href="../Public/css/style.css">
 </head>
 <body>
     <div class="wrapper">
@@ -336,6 +342,6 @@ require_once 'Config/koneksi.php';
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="Public/js/script.js"></script>
+    <script src="../Public/js/script.js"></script>
 </body>
 </html>

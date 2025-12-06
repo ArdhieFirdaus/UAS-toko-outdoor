@@ -1,8 +1,14 @@
 <?php
-session_start();
+// Start session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-if (!isset($_SESSION['id_user'])) {
-    header('Location: ../login.php');
+// Pengecekan jika belum login atau session tidak valid
+if (!isset($_SESSION['id_user']) || empty($_SESSION['id_user']) || !isset($_SESSION['login_time'])) {
+    session_unset();
+    session_destroy();
+    header('Location: login.php', true, 303);
     exit();
 }
 

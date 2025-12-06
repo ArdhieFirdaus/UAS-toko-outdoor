@@ -2,6 +2,9 @@
     RewriteEngine On
     RewriteBase /toko-outdoor2/
     
+    # Redirect root ke Views/login.php
+    RewriteRule ^$ Views/login.php [L]
+    
     # Redirect ke login jika akses file langsung
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

@@ -5,17 +5,23 @@ ini_set('display_errors', 0); // Jangan tampilkan error di output
 ini_set('log_errors', 1); // Log error ke file
 
 ob_start(); // Start output buffering to prevent any accidental output
-session_start();
 
-// Pengecekan jika belum login
-if (!isset($_SESSION['id_user'])) {
-    header('Location: ../login.php');
+// Start session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Pengecekan jika belum login atau session tidak valid
+if (!isset($_SESSION['id_user']) || empty($_SESSION['id_user']) || !isset($_SESSION['login_time'])) {
+    session_unset();
+    session_destroy();
+    header('Location: login.php', true, 303);
     exit();
 }
 
 // Hanya admin dan kasir yang bisa akses halaman ini
 if (!in_array($_SESSION['role'], ['admin', 'kasir'])) {
-    header('Location: ../dashboard.php');
+    header('Location: dashboard.php', true, 303);
     exit();
 }
 

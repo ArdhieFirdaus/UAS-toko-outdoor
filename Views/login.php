@@ -5,15 +5,32 @@ header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 header('Expires: Sun, 19 Nov 1978 05:00:00 GMT');
 
+// Start session
 session_start();
 
-// Jika user sudah login, redirect ke dashboard
-if (isset($_SESSION['id_user']) && !empty($_SESSION['id_user'])) {
-    header('Location: dashboard.php', true, 303);
-    exit();
+// Debug: Hapus session lama yang mungkin rusak
+if (isset($_SESSION['id_user']) && !isset($_SESSION['login_time'])) {
+    // Session rusak, bersihkan
+    $_SESSION = array();
+    session_destroy();
+    session_start();
 }
 
-require_once 'Config/koneksi.php';
+// Jika user sudah login DAN session valid, redirect ke dashboard
+if (isset($_SESSION['id_user']) && !empty($_SESSION['id_user']) && isset($_SESSION['login_time'])) {
+    // Validasi tambahan: cek apakah session masih fresh (tidak lebih dari 24 jam)
+    if ((time() - $_SESSION['login_time']) < 86400) {
+        header('Location: dashboard.php', true, 303);
+        exit();
+    } else {
+        // Session expired, hapus
+        $_SESSION = array();
+        session_destroy();
+        session_start();
+    }
+}
+
+require_once '../Config/koneksi.php';
 
 // Initialize variabel
 $error = '';
@@ -34,6 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($user) {
             // Verifikasi password (menggunakan bcrypt)
             if (password_verify($password, $user['password'])) {
+                // Regenerate session ID untuk keamanan
+                session_regenerate_id(true);
+                
                 // Login berhasil, simpan session
                 $_SESSION['id_user'] = $user['id_user'];
                 $_SESSION['username'] = $user['username'];
@@ -42,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['login_time'] = time();
 
                 // Redirect ke dashboard
-                header('Location: dashboard.php');
+                header('Location: dashboard.php', true, 303);
                 exit();
             } else {
                 $error = 'Username atau password salah!';
@@ -60,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Sistem Informasi Toko Outdoor</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="Public/css/style.css">
+    <link rel="stylesheet" href="../Public/css/style.css">
     <style>
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

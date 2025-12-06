@@ -1,8 +1,13 @@
 <?php
-session_start();
+// Start session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-if (!isset($_SESSION['id_user'])) {
-    exit('Unauthorized');
+// Pengecekan jika belum login atau session tidak valid
+if (!isset($_SESSION['id_user']) || empty($_SESSION['id_user']) || !isset($_SESSION['login_time'])) {
+    http_response_code(401);
+    exit('Unauthorized - Session expired');
 }
 
 require_once '../Config/koneksi.php';

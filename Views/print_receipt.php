@@ -1,5 +1,14 @@
 <?php
-session_start();
+// Start session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Pengecekan jika belum login atau session tidak valid
+if (!isset($_SESSION['id_user']) || empty($_SESSION['id_user']) || !isset($_SESSION['login_time'])) {
+    echo '<script>alert("Session expired. Please login again."); window.close();</script>';
+    exit();
+}
 
 require_once '../Config/koneksi.php';
 
