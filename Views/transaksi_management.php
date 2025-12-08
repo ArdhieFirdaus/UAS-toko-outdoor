@@ -377,7 +377,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
                         <!-- DETAIL ITEM -->
                         <div class="card mb-3">
-                            <div class="card-header">🛍️ Keranjang Belanja</div>
+                            <div class="card-header">Keranjang Belanja</div>
                             <div class="card-body" id="cartItems">
                                 <p class="text-muted">Belum ada item yang ditambahkan</p>
                             </div>
