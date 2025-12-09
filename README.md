@@ -28,7 +28,7 @@ Aplikasi ini menerapkan sistem **Role-Based Access Control (RBAC)** dengan 3 lev
   - Statistik total user, produk, transaksi
   - Total pendapatan
   - Grafik penjualan bulanan
-  - Daftar produk dengan stok rendah (≤ 5)
+  - Daftar produk dengan stok rendah (≤ 10)
   - Daftar transaksi terbaru
 - **Untuk Owner:**
   - Ringkasan bisnis keseluruhan
