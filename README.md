@@ -559,8 +559,8 @@ Database sudah dilengkapi dengan 10 sample produk outdoor:
 
 Untuk pertanyaan atau bantuan terkait aplikasi, silakan hubungi:
 
-- **Email**: admin@toko-outdoor.com
-- **GitHub**: [Repository Link]
+- **Email**: ardhie.firdaus@gmail.com
+- **GitHub**: [\\[Repository Link\](https://github.com/ArdhieFirdaus)]
 
 ---
 
