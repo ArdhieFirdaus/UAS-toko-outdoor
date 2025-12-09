@@ -180,9 +180,9 @@ require_once '../Config/koneksi.php';
                             Aksi Cepat
                         </div>
                         <div class="card-body">
-                            <a href="Views/user_management.php" class="btn btn-primary">Kelola User</a>
-                            <a href="Views/produk_management.php" class="btn btn-success">Kelola Produk</a>
-                            <a href="Views/transaksi_management.php" class="btn btn-info">Lihat Transaksi</a>
+                            <a href="user_management.php" class="btn btn-primary">Kelola User</a>
+                            <a href="produk_management.php" class="btn btn-success">Kelola Produk</a>
+                            <a href="transaksi_management.php" class="btn btn-info">Lihat Transaksi</a>
                             <a href="laporan.php" class="btn btn-warning">Lihat Laporan</a>
                         </div>
                     </div>
