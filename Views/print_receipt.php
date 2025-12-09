@@ -181,8 +181,6 @@ $details = fetch_all($conn, "
 </head>
 <body>
     <?php
-    session_start();
-
     require_once '../Config/koneksi.php';
 
     $id = sanitize($conn, $_GET['id'] ?? '');
@@ -208,14 +206,13 @@ $details = fetch_all($conn, "
 
     <div class="receipt">
         <div class="header">
-            <h2>⛰️ TOKO OUTDOOR</h2>
-            <p>Sistem Informasi Toko</p>
+            <h2>TOKO OUTDOOR</h2>
         </div>
 
         <div class="info">
             <div class="info-row">
                 <span>No. Transaksi:</span>
-                <span>#<?php echo $transaksi['id_transaksi']; ?></span>
+                <span>OTD-<?php echo $transaksi['id_transaksi']; ?></span>
             </div>
             <div class="info-row">
                 <span>Tanggal:</span>
@@ -256,14 +253,14 @@ $details = fetch_all($conn, "
 
         <div class="footer">
             <p>Terima kasih telah berbelanja</p>
-            <p style="font-size: 10px;">⛰️ Outdoor & Adventure</p>
+            <p style="font-size: 10px;">Outdoor & Adventure</p>
             <p style="margin-top: 5px;">Cetak: <?php echo date('d/m/Y H:i:s'); ?></p>
         </div>
     </div>
 
     <div class="no-print">
-        <button onclick="window.print()">🖨️ Cetak Struk</button>
-        <button onclick="window.close()">❌ Tutup</button>
+        <button onclick="window.print()">Cetak Struk</button>
+        <button onclick="window.close()">Tutup</button>
     </div>
 
     <?php
