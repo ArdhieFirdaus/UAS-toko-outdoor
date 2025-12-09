@@ -249,8 +249,8 @@ require_once '../Config/koneksi.php';
                             Aksi Cepat
                         </div>
                         <div class="card-body">
-                            <a href="Views/produk_management.php" class="btn btn-primary">Lihat Produk</a>
-                            <a href="Views/transaksi_management.php" class="btn btn-success">Kelola Transaksi</a>
+                            <a href="produk_management.php" class="btn btn-primary">Lihat Produk</a>
+                            <a href="transaksi_management.php" class="btn btn-success">Kelola Transaksi</a>
                         </div>
                     </div>
 

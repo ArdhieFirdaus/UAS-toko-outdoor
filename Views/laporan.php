@@ -35,12 +35,33 @@ $produk_habis = count_rows($conn, "SELECT * FROM produk WHERE stok = 0");
 
 // Hitung pendapatan per bulan
 $monthly_revenue = fetch_all($conn, "
-    SELECT DATE_FORMAT(tanggal_transaksi, '%Y-%m') as bulan, SUM(total_harga) as total 
+    SELECT DATE_FORMAT(tanggal_transaksi, '%Y-%m') as bulan, 
+           SUM(total_harga) as total,
+           COUNT(*) as jumlah_transaksi
     FROM transaksi 
     WHERE status = 'selesai' 
     GROUP BY DATE_FORMAT(tanggal_transaksi, '%Y-%m')
-    ORDER BY bulan DESC
+    ORDER BY bulan ASC
     LIMIT 12
+");
+
+// Penjualan per kategori
+$penjualan_kategori = fetch_all($conn, "
+    SELECT p.kategori, SUM(dt.subtotal) as total_penjualan, SUM(dt.jumlah) as total_terjual
+    FROM detail_transaksi dt
+    JOIN produk p ON dt.id_produk = p.id_produk
+    JOIN transaksi t ON dt.id_transaksi = t.id_transaksi
+    WHERE t.status = 'selesai'
+    GROUP BY p.kategori
+    ORDER BY total_penjualan DESC
+");
+
+// Statistik metode pembayaran
+$metode_pembayaran = fetch_all($conn, "
+    SELECT metode_pembayaran, COUNT(*) as jumlah, SUM(total_harga) as total
+    FROM transaksi 
+    WHERE status = 'selesai'
+    GROUP BY metode_pembayaran
 ");
 
 // Ambil 10 produk terlaris
@@ -102,6 +123,7 @@ function formatDate($date) {
     <title>Laporan - Toko Outdoor</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../Public/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -245,6 +267,43 @@ function formatDate($date) {
                     </div>
                 </div>
 
+                <!-- GRAFIK ANALISIS PENJUALAN -->
+                <div class="row mb-3">
+                    <!-- Grafik Pendapatan Bulanan -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Grafik Pendapatan Bulanan
+                            </div>
+                            <div class="card-body">
+                                <canvas id="monthlyRevenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grafik Metode Pembayaran -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Metode Pembayaran
+                            </div>
+                            <div class="card-body">
+                                <canvas id="paymentMethodChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grafik Penjualan Per Kategori -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        Penjualan Per Kategori Produk
+                    </div>
+                    <div class="card-body">
+                        <canvas id="categoryChart" height="60"></canvas>
+                    </div>
+                </div>
+
                 <!-- PRODUK TERLARIS -->
                 <div class="card mb-3">
                     <div class="card-header">10 Produk Terlaris</div>
@@ -329,6 +388,173 @@ function formatDate($date) {
             const printWindow = window.open(url, '', 'width=1000,height=800');
             printWindow.focus();
         }
+
+        // Data untuk grafik
+        const monthlyData = <?php echo json_encode($monthly_revenue); ?>;
+        const categoryData = <?php echo json_encode($penjualan_kategori); ?>;
+        const paymentData = <?php echo json_encode($metode_pembayaran); ?>;
+
+        // Grafik Pendapatan Bulanan
+        const monthlyCtx = document.getElementById('monthlyRevenueChart').getContext('2d');
+        new Chart(monthlyCtx, {
+            type: 'bar',
+            data: {
+                labels: monthlyData.map(item => {
+                    const [year, month] = item.bulan.split('-');
+                    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
+                    return monthNames[parseInt(month) - 1] + ' ' + year;
+                }),
+                datasets: [{
+                    label: 'Pendapatan',
+                    data: monthlyData.map(item => item.total),
+                    backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                    borderColor: 'rgba(102, 126, 234, 1)',
+                    borderWidth: 1,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Rp ' + context.parsed.y.toLocaleString('id-ID');
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + (value / 1000000).toFixed(1) + 'jt';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Grafik Penjualan Per Kategori
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        new Chart(categoryCtx, {
+            type: 'bar',
+            data: {
+                labels: categoryData.map(item => item.kategori),
+                datasets: [{
+                    label: 'Total Penjualan',
+                    data: categoryData.map(item => item.total_penjualan),
+                    backgroundColor: [
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(118, 75, 162, 0.8)',
+                        'rgba(40, 167, 69, 0.8)',
+                        'rgba(255, 193, 7, 0.8)',
+                        'rgba(23, 162, 184, 0.8)',
+                        'rgba(220, 53, 69, 0.8)',
+                        'rgba(108, 117, 125, 0.8)',
+                        'rgba(255, 99, 132, 0.8)',
+                        'rgba(54, 162, 235, 0.8)',
+                        'rgba(255, 206, 86, 0.8)'
+                    ],
+                    borderWidth: 0,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const item = categoryData[context.dataIndex];
+                                return [
+                                    'Penjualan: Rp ' + context.parsed.x.toLocaleString('id-ID'),
+                                    'Terjual: ' + item.total_terjual + ' pcs'
+                                ];
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + (value / 1000000).toFixed(1) + 'jt';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Grafik Metode Pembayaran (Pie Chart)
+        const paymentCtx = document.getElementById('paymentMethodChart').getContext('2d');
+        new Chart(paymentCtx, {
+            type: 'bar',
+            data: {
+                labels: paymentData.map(item => {
+                    const labels = {
+                        'tunai': 'Tunai',
+                        'kartu_kredit': 'Kartu Kredit',
+                        'transfer_bank': 'Transfer Bank'
+                    };
+                    return labels[item.metode_pembayaran] || item.metode_pembayaran;
+                }),
+                datasets: [{
+                    label: 'Jumlah Transaksi',
+                    data: paymentData.map(item => item.jumlah),
+                    backgroundColor: [
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(40, 167, 69, 0.8)',
+                        'rgba(255, 193, 7, 0.8)'
+                    ],
+                    borderWidth: 0,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const item = paymentData[context.dataIndex];
+                                const total = paymentData.reduce((sum, d) => sum + parseInt(d.jumlah), 0);
+                                const percentage = ((item.jumlah / total) * 100).toFixed(1);
+                                return [
+                                    'Transaksi: ' + item.jumlah + ' (' + percentage + '%)',
+                                    'Total: Rp ' + parseInt(item.total).toLocaleString('id-ID')
+                                ];
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
     </script>
 
 </body>
