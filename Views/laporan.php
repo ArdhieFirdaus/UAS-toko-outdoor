@@ -247,30 +247,28 @@ function formatDate($date) {
 
                 <!-- PRODUK TERLARIS -->
                 <div class="card mb-3">
-                    <div class="card-header">
-                        10 Produk Terlaris
-                    </div>
+                    <div class="card-header">10 Produk Terlaris</div>
                     <div class="card-body">
                         <?php if (count($produk_terlaris) > 0): ?>
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table table-modern">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th><strong>Nama Produk</strong></th>
-                                            <th><strong>Kategori</strong></th>
-                                            <th style="text-align: right;"><strong>Terjual</strong></th>
-                                            <th style="text-align: right; white-space: nowrap; padding-right: 20px;"><strong>Penjualan</strong></th>
+                                            <th width="5%" class="text-center"><strong>No</strong></th>
+                                            <th width="30%"><strong>Nama Produk</strong></th>
+                                            <th width="20%"><strong>Kategori</strong></th>
+                                            <th width="20%"><strong>Terjual</strong></th>
+                                            <th width="25%"><strong>Total Penjualan</strong></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($produk_terlaris as $index => $item): ?>
                                             <tr>
-                                                <td><?php echo $index + 1; ?></td>
-                                                <td><strong><?php echo htmlspecialchars($item['nama_produk']); ?></strong></td>
-                                                <td><?php echo htmlspecialchars($item['kategori']); ?></td>
-                                                <td style="text-align: right; white-space: nowrap;"><?php echo $item['total_terjual']; ?> pcs</td>
-                                                <td style="text-align: right; white-space: nowrap; padding-right: 20px;"><strong><?php echo formatCurrency($item['total_penjualan']); ?></strong></td>
+                                                <td class="text-center"><?php echo $index + 1; ?></td>
+                                                <td class="align-middle"><strong><?php echo htmlspecialchars($item['nama_produk']); ?></strong></td>
+                                                <td class="align-middle"><?php echo htmlspecialchars($item['kategori']); ?></td>
+                                                <td class="align-middle"><?php echo $item['total_terjual']; ?> pcs</td>
+                                                <td class="align-middle"><strong><?php echo formatCurrency($item['total_penjualan']); ?></strong></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
