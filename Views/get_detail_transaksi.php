@@ -40,7 +40,7 @@ $details = fetch_all($conn, "
         <table class="table table-sm">
             <tr>
                 <td><strong>ID Transaksi:</strong></td>
-                <td>#<?php echo $transaksi['id_transaksi']; ?></td>
+                <td>OTD-<?php echo $transaksi['id_transaksi']; ?></td>
             </tr>
             <tr>
                 <td><strong>Tanggal:</strong></td>
