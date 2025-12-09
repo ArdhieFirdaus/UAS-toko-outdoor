@@ -94,6 +94,34 @@ $revenue = fetch_one($conn, "
             text-align: center;
             font-size: 12px;
         }
+        .btn-print {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .btn-print:hover {
+            background-color: #5a6268;
+        }
+        .btn-close-window {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .btn-close-window:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
@@ -182,8 +210,8 @@ $revenue = fetch_one($conn, "
         <div class="footer-print">
             <p>&copy; 2025 Toko Outdoor - Sistem Informasi Manajemen</p>
             <p class="no-print">
-                <button onclick="window.print()" class="btn btn-primary">Cetak</button>
-                <button onclick="window.close()" class="btn btn-secondary">Tutup</button>
+                <button onclick="window.print()" class="btn-print">Cetak</button>
+                <button onclick="window.close()" class="btn-close-window">Tutup</button>
             </p>
         </div>
     </div>

@@ -169,13 +169,26 @@ $details = fetch_all($conn, "
             margin: 0 5px;
             font-size: 14px;
             cursor: pointer;
-            border: 1px solid #ccc;
+            border: none;
             border-radius: 4px;
-            background-color: #f0f0f0;
+            color: white;
+            font-weight: 500;
         }
 
-        .no-print button:hover {
-            background-color: #e0e0e0;
+        .btn-print {
+            background-color: #6c757d;
+        }
+
+        .btn-print:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-close-window {
+            background-color: #dc3545;
+        }
+
+        .btn-close-window:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
@@ -259,8 +272,8 @@ $details = fetch_all($conn, "
     </div>
 
     <div class="no-print">
-        <button onclick="window.print()">Cetak Struk</button>
-        <button onclick="window.close()">Tutup</button>
+        <button class="btn-print" onclick="window.print()">Cetak Struk</button>
+        <button class="btn-close-window" onclick="window.close()">Tutup</button>
     </div>
 
     <?php
