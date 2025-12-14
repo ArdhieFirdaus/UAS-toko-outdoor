@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             </div>
 
             <ul class="sidebar-menu">
-                <li><a href="../dashboard.php">Dashboard</a></li>
+                <li><a href="dashboard.php">Dashboard</a></li>
                 <?php if ($role === 'admin'): ?>
                     <li><a href="user_management.php">Manajemen User</a></li>
                 <?php endif; ?>

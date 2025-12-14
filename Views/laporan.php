@@ -139,7 +139,7 @@ function formatDate($date) {
             </div>
 
             <ul class="sidebar-menu">
-                <li><a href="../dashboard.php">Dashboard</a></li>
+                <li><a href="dashboard.php">Dashboard</a></li>
                 <?php if ($role === 'admin'): ?>
                     <li><a href="user_management.php">Manajemen User</a></li>
                     <li><a href="produk_management.php">Produk</a></li>

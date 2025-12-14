@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             </div>
 
             <ul class="sidebar-menu">
-                <li><a href="../dashboard.php">Dashboard</a></li>
+                <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="user_management.php" class="active">Manajemen User</a></li>
                 <li><a href="produk_management.php">Produk</a></li>
                 <li><a href="transaksi_management.php">Transaksi</a></li>

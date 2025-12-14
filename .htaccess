@@ -1,44 +1,27 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /toko-outdoor2/
-    
-    # Redirect root ke Views/login.php
-    RewriteRule ^$ Views/login.php [L]
-    
-    # Redirect ke login jika akses file langsung
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php [L]
-</IfModule>
+# URL Rewriting
 
-# Security Headers
+RewriteEngine On
 
-<IfModule mod_headers.c>
-    Header always set X-Content-Type-Options "nosniff"
-    Header always set X-Frame-Options "SAMEORIGIN"
-    Header always set X-XSS-Protection "1; mode=block"
-    Header always set Referrer-Policy "strict-origin-when-cross-origin"
-</IfModule>
+# Redirect root ke Views/login.php
+
+RewriteRule ^$ Views/login.php [L]
+
+# Route ke index.php jika file/folder tidak ada
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.\*)$ index.php [L]
 
 # Disable directory listing
 
-<IfModule mod_autoindex.c>
-    Options -Indexes
-</IfModule>
+Options -Indexes
 
-# Prevent access to sensitive files
+# Protect sensitive files
 
 <Files "\*.sql">
-Order allow,deny
-Deny from all
+Require all denied
 </Files>
 
 <Files "\*.env">
-Order allow,deny
-Deny from all
-</Files>
-
-<Files "\*.md">
-Order allow,deny
-Deny from all
+Require all denied
 </Files>
