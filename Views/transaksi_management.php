@@ -204,7 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     <path d="M10 35L20 20L30 28L40 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <circle cx="15" cy="17" r="2" fill="white"/>
                 </svg>
-                <h2>Toko Outdoor</h2>
+                <h2>Arnathea Outdoor</h2>
                 <p>Sistem Informasi</p>
             </div>
 
@@ -235,7 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <main>
             <!-- HEADER -->
             <div class="header">
-                <h1>Manajemen Transaksi</h1>
+                <h1></h1>
                 <div class="header-user">
                     <div class="user-info">
                         <p class="user-name"><?php echo htmlspecialchars($nama_lengkap); ?></p>

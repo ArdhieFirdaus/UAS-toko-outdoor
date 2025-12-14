@@ -282,7 +282,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <circle cx="15" cy="17" r="2" fill="white"/>
                 </svg>
             </div>
-            <h1>Toko Outdoor</h1>
+            <h1>Arnathea Outdoor</h1>
             <p>Sistem Informasi Manajemen</p>
         </div>
 
@@ -318,7 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
 
             <div class="footer-text">
-                <p>© 2025 Toko Outdoor | Sistem Informasi Manajemen</p>
+                <p>© 2025 Arnathea Outdoor | Sistem Informasi Manajemen</p>
             </div>
         </div>
     </div>

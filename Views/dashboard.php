@@ -83,7 +83,7 @@ require_once '../Config/koneksi.php';
                     <path d="M10 35L20 20L30 28L40 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <circle cx="15" cy="17" r="2" fill="white"/>
                 </svg>
-                <h2>Toko Outdoor</h2>
+                <h2>Arnathea Outdoor</h2>
                 <p>Sistem Informasi</p>
             </div>
 
@@ -112,7 +112,7 @@ require_once '../Config/koneksi.php';
         <main>
             <!-- HEADER -->
             <div class="header">
-                <h1>Dashboard</h1>
+                <h1></h1>
                 <div class="header-user">
                     <div class="user-info">
                         <p class="user-name"><?php echo htmlspecialchars($nama_lengkap); ?></p>
@@ -124,7 +124,7 @@ require_once '../Config/koneksi.php';
             <!-- CONTENT -->
             <div class="content">
                 <div class="page-title">Selamat Datang!</div>
-                <p class="page-subtitle">Dashboard Sistem Informasi Toko Outdoor</p>
+                <p class="page-subtitle">Dashboard Sistem Informasi Arnathea Outdoor</p>
 
                 <?php if ($role === 'admin'): ?>
                     <!-- ADMIN DASHBOARD -->

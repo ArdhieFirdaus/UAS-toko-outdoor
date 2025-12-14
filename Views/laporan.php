@@ -134,7 +134,7 @@ function formatDate($date) {
                     <path d="M10 35L20 20L30 28L40 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <circle cx="15" cy="17" r="2" fill="white"/>
                 </svg>
-                <h2>Toko Outdoor</h2>
+                <h2>Arnathea Outdoor</h2>
                 <p>Sistem Informasi</p>
             </div>
 
@@ -163,7 +163,7 @@ function formatDate($date) {
         <main>
             <!-- HEADER -->
             <div class="header">
-                <h1>Laporan</h1>
+                <h1></h1>
                 <div class="header-user">
                     <div class="user-info">
                         <p class="user-name"><?php echo htmlspecialchars($nama_lengkap); ?></p>
@@ -175,7 +175,7 @@ function formatDate($date) {
             <!-- CONTENT -->
             <div class="content">
                 <div class="page-title">Laporan Sistem</div>
-                <p class="page-subtitle">Analisis data penjualan dan manajemen toko outdoor</p>
+                <p class="page-subtitle">Analisis data penjualan dan manajemen arnathea outdoor</p>
 
                 <!-- FILTER TANGGAL -->
                 <div class="card mb-3">
